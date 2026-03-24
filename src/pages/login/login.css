@@ -1,0 +1,182 @@
+/* src/pages/login/login.css */
+
+/* Remove margens padrões do navegador para preencher a tela */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Área da Esquerda - Identidade e Marca */
+.login-left {
+  flex: 1.2; /* Um pouco maior que a direita */
+  background: linear-gradient(135deg, #001f26 0%, #003641 100%); /* Azul Escuro Sicoob Nobre */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de Névoa Sutil no fundo escuro (como você gosta) */
+.login-left::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 174, 157, 0.2); /* Verde Sicoob bem transparente */
+  border-radius: 50%;
+  filter: blur(80px);
+  top: 10%;
+  left: -50px;
+}
+
+.login-left-content {
+  text-align: center;
+  z-index: 1; /* Garante que o texto fique acima da névoa */
+}
+
+.fake-logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #00ae9d; /* Verde Sicoob Principal */
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fake-logo-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #00ae9d;
+  border-radius: 8px;
+}
+
+.login-left h1 {
+  font-size: 2.2rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.login-left h1 strong {
+  font-weight: 700;
+  color: #c9d200; /* Um leve toque do Limão Sicoob */
+}
+
+.login-left p {
+  font-weight: 300;
+  opacity: 0.8;
+  max-width: 400px;
+}
+
+/* Área da Direita - Formulário Limpo e Focado */
+.login-right {
+  flex: 1;
+  background-color: #f7fafc; /* Branco gelo para conforto visual */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+.login-form-box {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra sutil para "flutuar" */
+}
+
+.login-form-box h2 {
+  color: #003641;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.login-form-box p.subtitle {
+  color: #718096;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+/* Estilo dos Campos de Entrada (Inputs) Premium */
+.input-group {
+  margin-bottom: 25px;
+}
+
+.input-group label {
+  display: block;
+  color: #4a5568;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #edf2f7; /* Fundo suave */
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Efeito de Foco Robusto (Mostra UX) */
+.input-group input:focus {
+  outline: none;
+  border-color: #00ae9d;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(0, 174, 157, 0.15); /* Brilho suave verde no foco */
+}
+
+/* O Botão Principal Robusto */
+.login-btn-premium {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: #00ae9d; /* Verde Principal */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 174, 157, 0.2);
+}
+
+.login-btn-premium:hover {
+  background-color: #009384; /* Verde um pouco mais escuro no hover */
+  box-shadow: 0 6px 12px rgba(0, 174, 157, 0.3);
+  transform: translateY(-2px);
+}
+
+.login-btn-premium:active {
+  transform: translateY(1px);
+}
+/* Efeito de girar o texto ou um ícone (Opcional, mas fica lindo) */
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.login-btn-premium:disabled {
+  background-color: #008a7d; /* Cor mais opaca */
+  cursor: not-allowed;
+  opacity: 0.8;
+}

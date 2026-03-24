@@ -1,0 +1,20 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nome": "Karen",
+      "email": "karen@teste.com",
+      "senha": "123",
+      "saldo": 2500.50
+    }
+  ],
+  "transacoes": [
+    {
+      "id": "1",
+      "tipo": "PIX",
+      "valor": 150.00,
+      "data": "2026-03-23",
+      "descricao": "Pagamento Internet"
+    }
+  ]
+}
