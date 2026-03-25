@@ -1,16 +1,60 @@
-# React + Vite
+# 💳 Digital Bank MVP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto de um banco digital desenvolvido com React, com foco em simular um ambiente real de aplicação, indo além da interface e trabalhando lógica de negócio, integração com API e experiência do usuário.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologias utilizadas
 
-## React Compiler
+- React (Vite)
+- Axios
+- JSON Server (API fake)
+- Context API
+- LocalStorage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 💻 Funcionalidades
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🔐 Login com validação de usuário
+- 🔄 Persistência de sessão (não perde login ao atualizar)
+- 💰 Visualização de saldo
+- 👁️ Ocultar/mostrar saldo (privacidade)
+- 💸 Transferência (Pix simulado)
+- 📊 Validação de saldo antes de transferências
+- ⚠️ Tratamento de erros (API e login)
+- ⏳ Loading e Skeleton para melhor experiência
+
+---
+
+## 🧠 Regras de negócio implementadas
+
+- Não permite transferências com valor zero ou negativo
+- Bloqueia transferências com saldo insuficiente
+- Atualiza saldo após transação
+- Evita quebra da aplicação em caso de falha da API
+
+---
+
+## 🔗 Integração com API
+
+Os dados são consumidos através de uma API simulada com JSON Server, utilizando Axios para requisições HTTP (GET, POST, PUT, DELETE), simulando um ambiente real de backend.
+
+---
+## 🔐 Autenticação
+
+- Gerenciada com Context API  
+- Persistência com LocalStorage  
+- Proteção de rotas com React Router  
+
+---
+## 📌 Objetivo do projeto
+
+Simular um sistema bancário funcional, aplicando conceitos utilizados no mercado como:
+- consumo de API
+- gerenciamento de estado global
+- regras de negócio
+- tratamento de erros
+- foco em experiência do usuário
+
+---
