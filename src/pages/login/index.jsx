@@ -25,7 +25,7 @@ export default function Login() {
     // 2. Tentar realizar o login (Lógica de erro/sucesso do Ponto 1)
     const resultado = await realizarLogin(email, senha);
     
-    if (resultado.sucess) {
+    if (resultado.success) {
       navigate('/home');
     } else {
       // Exibe o erro de senha errada ou servidor offline

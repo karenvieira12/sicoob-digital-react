@@ -2,9 +2,9 @@
   "usuarios": [
     {
       "id": "1",
-      "nome": "Karen",
+      "name": "Karen",
       "email": "karen@teste.com",
-      "senha": "123",
+      "password": "123",
       "saldo": 2500.50
     }
   ],

@@ -17,23 +17,24 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function realizarLogin(email, senha) {
-    //  Erro de API e Login (Try/Catch)
-    try {
-      const response = await api.get('/usuarios');
-      const user = response.data.find(u => u.email === email && u.senha === senha);
+  try {
+    const response = await api.get('/users');
 
-      if (user) {
-        setUsuarioLogado(user);
-        localStorage.setItem('@Sicoob:usuario', JSON.stringify(user));
-        return { sucess: true };
-      } else {
-        return { sucess: false, message: "E-mail ou senha incorretos!" };
-      }
-    } catch (error) {
-      // Item 1: Erro de API (Server Offline)
-      return { sucess: false, message: "Servidor fora do ar. Tente mais tarde." };
+    const user = response.data.find(
+      (u) => u.email === email && u.password === senha
+    );
+
+    if (user) {
+      setUsuarioLogado(user);
+      localStorage.setItem('@Sicoob:usuario', JSON.stringify(user));
+      return { success: true };
+    } else {
+      return { success: false, message: "E-mail ou senha incorretos!" };
     }
+  } catch (error) {
+    return { success: false, message: "Servidor fora do ar. Tente mais tarde." };
   }
+}
 
   function realizarLogout() {
     setUsuarioLogado(null);
