@@ -72,7 +72,7 @@ export default function Home() {
             </div>
           ) : (
             <h2 className={`balance-value ${!mostrarSaldo ? 'balance-hidden' : ''}`}>
-              R$ {usuarioLogado.saldo.toFixed(2)}
+              R$ {Number(usuarioLogado.balance).toFixed(2)}
             </h2>
           )}
         </div>
