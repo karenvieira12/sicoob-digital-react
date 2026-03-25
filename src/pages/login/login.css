@@ -188,137 +188,99 @@ body, html {
 
 /* --- REDESIGN PREMIUM MOBILE --- */
 
+/* --- LIMPEZA E REDESIGN PREMIUM MOBILE --- */
+
 @media (max-width: 768px) {
+  /* 1. RESET DA PÁGINA: Força o fundo escuro e limpa o layout */
   .login-page {
-    flex-direction: column;
+    flex-direction: column !important;
     min-height: 100vh;
-    padding: 0;
-    margin: 0;
-    /* 1. FUNDO ESCURO PROFUNDO (Cores oficiais do Sicoob) */
-    background: radial-gradient(circle at top, #005951 0%, #003641 100%);
-    display: flex;
+    background: radial-gradient(circle at top, #005951 0%, #003641 100%) !important;
+    display: flex !important;
     justify-content: center;
     align-items: center;
-    position: relative;
-    font-family: 'Inter', 'Montserrat', sans-serif;
+    padding: 0 !important;
+    overflow: hidden;
   }
 
-  /* Removemos os pseudo-elementos antigos que estavam simples */
-  .login-page::before, .login-page::after {
-    display: none;
+  /* 2. SUMIR COM OS "FANTASMAS": Esconde tudo da coluna esquerda antiga */
+  .login-left {
+    display: none !important;
   }
 
-  /* 2. NOVO HEADER DO TOPO - Mais elegante */
+  /* 3. HEADER NOVO (SÓ UM): Elegante e centralizado */
   .login-right::before {
     content: "SICOOB DIGITAL";
     position: absolute;
-    top: 60px;
+    top: 50px;
     left: 0;
     width: 100%;
     text-align: center;
-    color: #00ae9d; /* Verde Sicoob mais vibrante para o logo */
+    color: #00ae9d;
     font-weight: 900;
     font-size: 1.4rem;
     letter-spacing: 3px;
     z-index: 10;
+    font-family: 'Montserrat', sans-serif;
   }
 
   .login-right::after {
-    content: "O seu banco digital, onde você estiver.";
+    content: "Segurança e agilidade onde você estiver.";
     position: absolute;
-    top: 95px;
+    top: 85px;
     left: 0;
     width: 100%;
     text-align: center;
-    color: rgba(255, 255, 255, 0.7); /* Branco suave para o slogan */
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
     font-weight: 300;
-    letter-spacing: 0.5px;
     z-index: 10;
   }
 
+  /* 4. AJUSTE DA CAIXA BRANCA: Centralizada e sem sombras estranhas */
   .login-right {
-    width: 100%;
-    padding: 0 25px;
+    width: 100% !important;
+    margin-top: 80px; /* Empurra a caixa para baixo do texto novo */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 20;
   }
 
-  /* 3. A CAIXA DE LOGIN - Estilo "Glassmorphism" suave */
   .login-form-box {
-    width: 100%;
-    max-width: 380px;
-    padding: 40px 25px;
+    width: 90%;
+    max-width: 360px;
+    padding: 35px 25px;
     background: #ffffff;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   }
 
+  /* 5. TEXTOS DENTRO DA CAIXA */
   .login-form-box h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #003641; /* Título no azul escuro do banco */
-    text-align: center;
-    margin-bottom: 10px;
+    font-size: 1.7rem;
+    color: #003641;
+    margin-bottom: 5px;
   }
 
   .subtitle {
-    text-align: center;
+    font-size: 0.9rem;
     color: #718096;
-    font-size: 0.95rem;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
-  /* 4. INPUTS MAIS MODERNOS */
+  /* 6. BOTÃO E INPUTS */
   .input-group label {
-    font-weight: 600;
-    font-size: 0.85rem;
+    font-weight: bold;
+    font-size: 0.8rem;
     color: #4a5568;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-left: 5px;
   }
 
-  .input-group input {
-    width: 100%;
-    height: 55px;
-    background: #f7fafc;
-    border: 2px solid #edf2f7;
-    border-radius: 12px;
-    padding: 0 15px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    margin-top: 8px;
-    margin-bottom: 20px;
-  }
-
-  .input-group input:focus {
-    border-color: #00ae9d;
-    background: #fff;
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(0, 174, 157, 0.1);
-  }
-
-  /* 5. BOTÃO PREMIUM */
   .login-btn-premium {
-    width: 100%;
+    background: #00ae9d !important;
     height: 55px;
-    background: linear-gradient(90deg, #00ae9d 0%, #008f81 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
     font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s;
-    box-shadow: 0 10px 20px rgba(0, 174, 157, 0.3);
-    margin-top: 10px;
-  }
-
-  .login-btn-premium:active {
-    transform: scale(0.98);
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 174, 157, 0.2);
   }
 }
