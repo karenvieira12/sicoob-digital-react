@@ -184,49 +184,111 @@ body, html {
 
 /* --- RESOLVENDO A QUEBRA NO MOBILE (Telas < 768px) --- */
 
+/* --- RESPONSIVIDADE DO LOGIN (MOBILE) --- */
+
 @media (max-width: 768px) {
   .login-page {
-    flex-direction: column; /* Empilha as coisas, mas vamos sumir com a esquerda */
+    flex-direction: column;
     min-height: 100vh;
-    background-color: #003641; /* Fundo escuro do Sicoob para a tela toda */
+    padding: 0;
+    margin: 0;
+    
+    /* 1. FUNDO COM DEGRADE (GRADIENTE) - Cores do Sicoob */
+    background: linear-gradient(135deg, #00ae9d 0%, #003641 100%);
+    
+    /* 2. CENTRALIZAR TUDO VERTICALMENTE */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Para o logo no topo */
   }
 
-  /* 1. ESCONDE a coluna da esquerda (texto/logo que estão quebrando) */
+  /* 3. ESCONDE a coluna da esquerda original (que causava erro) */
   .login-left {
     display: none; 
   }
 
-  /* 2. Faz a coluna da direita ocupar a largura INTEIRA */
+  /* 4. TRAZ O LOGO E O SLOGAN PARA O TOPO (CENTRALIZADOS) */
+  .login-page::before {
+    content: "Sicoob Digital\aBem-vinda ao seu Banco Digital"; /* O \a faz a quebra de linha no CSS */
+    display: block;
+    position: absolute;
+    top: 50px; /* Distância do topo */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif; /* Fonte profissional */
+    font-weight: bold;
+    color: #fff;
+    white-space: pre; /* Necessário para que a quebra de linha (\a) funcione */
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+  
+  /* Ajuste específico para a segunda linha (slogan) */
+  .login-page::before {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+  /* Estilo para a segunda linha ficar mais suave */
+  .login-page::before {
+    content: "Sicoob Digital";
+    font-size: 1.1rem;
+  }
+  /* Para adicionar o slogan, vamos adicionar outro pseudo-elemento */
+  .login-page::after {
+    content: "Bem-vinda ao seu \A Banco Digital";
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
+    color: #ffd700; /* Dourado para destacar o slogan */
+    font-size: 1.5rem;
+    font-weight: bold;
+    white-space: pre;
+    z-index: 10;
+    text-transform: capitalize;
+  }
+
+  /* 5. A COLUNA DA DIREITA AGORA SÓ CENTRALIZA A CAIXA */
   .login-right {
     width: 100%;
-    padding: 20px;
+    padding: 0 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Removemos o background-color daqui para herdar do .login-page */
+    margin-top: 150px; /* Espaço para o logo/slogan no topo */
+    z-index: 20; /* Fica acima do fundo e do topo */
   }
 
-  /* 3. Ajusta a CAIXA BRANCA para ficar centralizada e bonita */
+  /* 6. A CAIXA BRANCA - MAIS REFINADA */
   .login-form-box {
     width: 100%;
-    max-width: 380px; /* Garante que ela não fique grudada nas bordas */
-    padding: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Sombra mais suave */
-    border-radius: 20px; /* Bordas arredondadas profissionais */
+    max-width: 360px;
+    padding: 30px 20px;
+    background-color: rgba(255, 255, 255, 0.95); /* Levemente transparente */
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3); /* Sombra mais forte para destacar */
   }
 
-  /* 4. Ajustes nos textos e inputs para Mobile UX */
   .login-form-box h2 {
     font-size: 1.6rem;
     text-align: center;
-    margin-bottom: 5px;
+    color: #333;
   }
 
   .subtitle {
     text-align: center;
     margin-bottom: 25px;
+    color: #666;
   }
 
+  /* 7. INPUTS E BOTÃO - Perfeitos para o toque */
   .input-group label {
     font-size: 0.9rem;
     color: #444;
@@ -234,17 +296,22 @@ body, html {
 
   .input-group input {
     width: 100%;
-    height: 48px; /* Mais alto para facilitar o toque */
+    height: 50px;
     font-size: 1rem;
     margin-bottom: 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 8px;
   }
 
-  /* 5. Botão grande e fácil de clicar com o polegar */
   .login-btn-premium {
     width: 100%;
-    height: 52px;
-    font-size: 1.1rem;
+    height: 55px;
+    font-size: 1.2rem;
+    background-color: #00ae9d;
+    color: #fff;
+    border-radius: 10px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 15px;
   }
 }
