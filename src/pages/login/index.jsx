@@ -26,7 +26,7 @@ export default function Login() {
     const resultado = await realizarLogin(email, senha);
     
     if (resultado.success) {
-      navigate('/home');
+     window.location.href = '/home';
     } else {
       // Exibe o erro de senha errada ou servidor offline
       alert(resultado.message); 

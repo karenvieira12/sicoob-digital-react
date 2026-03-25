@@ -20,14 +20,14 @@ export default function Home() {
   function realizarTransferencia() {
     const valor = parseFloat(valorTransferencia);
     if (!valor || valor <= 0) return alert("❌ Digite um valor válido!");
-    if (valor > usuarioLogado.saldo) return alert("❌ Saldo insuficiente!");
+    if (valor > usuarioLogado.balance) return alert("❌ Saldo insuficiente!");
     
     alert(`✅ Sucesso! R$ ${valor.toFixed(2)} transferidos.`);
     setValorTransferencia('');
   }
 
   // --- 🔴 NOVO: VERIFICAÇÃO DE ERRO/OFFLINE (Ponto 1 do Prof) ---
-  if (!carregando && !usuarioLogado?.nome) {
+  if (!carregando && !usuarioLogado?.name) {
     return (
       <div className="home-container" style={{ textAlign: 'center', padding: '50px' }}>
         <h1>⚠️ Erro ao carregar dados</h1>
@@ -50,8 +50,9 @@ export default function Home() {
       {/* O resto do seu return continua EXATAMENTE igual ao que você já tem */}
       <header className="home-header">
         <div className="user-info">
-          <div className="user-avatar">{usuarioLogado.nome.charAt(0)}</div>
-          <span>Olá, <strong>{usuarioLogado.nome}</strong></span>
+          <div className="user-avatar">{usuarioLogado?.name?.charAt(0)}
+          </div>
+          <span>Olá, <strong>{usuarioLogado.name}</strong></span>
         </div>
         <button className="btn-logout" onClick={() => { realizarLogout(); navigate('/'); }}>Sair</button>
       </header>
