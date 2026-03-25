@@ -204,3 +204,47 @@
 /* Tamanhos específicos para o saldo */
 .skeleton-text { width: 120px; height: 15px; margin-bottom: 10px; }
 .skeleton-title { width: 200px; height: 40px; }
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+
+@media (max-width: 768px) {
+  /* 1. Ajustar o Cabeçalho */
+  .home-header {
+    padding: 15px 20px;
+    flex-direction: row; /* Mantém nome de um lado e botão do outro */
+  }
+
+  /* 2. Ajustar o Conteúdo Principal */
+  .home-content {
+    padding: 20px;
+  }
+
+  /* 3. Card de Saldo mais amigável */
+  .balance-card {
+    max-width: 100%; /* Ocupa a largura toda do celular */
+    padding: 20px;
+  }
+
+  .balance-value {
+    font-size: 1.8rem; /* Diminui um pouco o texto para não quebrar */
+  }
+
+  /* 4. Grade de Atalhos (MUITO IMPORTANTE) */
+  .actions-grid {
+    grid-template-columns: repeat(2, 1fr); /* No celular, fica 2 colunas e 2 linhas */
+    gap: 10px;
+  }
+
+  .action-item {
+    padding: 15px;
+  }
+
+  /* 5. Transferência (Pix) */
+  .transfer-area div {
+    flex-direction: column; /* No celular, o botão fica EMBAIXO do input */
+  }
+  
+  .transfer-area button {
+    width: 100%; /* Botão largo para ser fácil de clicar com o polegar */
+  }
+}
