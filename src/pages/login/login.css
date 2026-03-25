@@ -186,132 +186,139 @@ body, html {
 
 /* --- RESPONSIVIDADE DO LOGIN (MOBILE) --- */
 
+/* --- REDESIGN PREMIUM MOBILE --- */
+
 @media (max-width: 768px) {
   .login-page {
     flex-direction: column;
     min-height: 100vh;
     padding: 0;
     margin: 0;
-    
-    /* 1. FUNDO COM DEGRADE (GRADIENTE) - Cores do Sicoob */
-    background: linear-gradient(135deg, #00ae9d 0%, #003641 100%);
-    
-    /* 2. CENTRALIZAR TUDO VERTICALMENTE */
+    /* 1. FUNDO ESCURO PROFUNDO (Cores oficiais do Sicoob) */
+    background: radial-gradient(circle at top, #005951 0%, #003641 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Para o logo no topo */
+    position: relative;
+    font-family: 'Inter', 'Montserrat', sans-serif;
   }
 
-  /* 3. ESCONDE a coluna da esquerda original (que causava erro) */
-  .login-left {
-    display: none; 
+  /* Removemos os pseudo-elementos antigos que estavam simples */
+  .login-page::before, .login-page::after {
+    display: none;
   }
 
-  /* 4. TRAZ O LOGO E O SLOGAN PARA O TOPO (CENTRALIZADOS) */
-  .login-page::before {
-    content: "Sicoob Digital\aBem-vinda ao seu Banco Digital"; /* O \a faz a quebra de linha no CSS */
-    display: block;
+  /* 2. NOVO HEADER DO TOPO - Mais elegante */
+  .login-right::before {
+    content: "SICOOB DIGITAL";
     position: absolute;
-    top: 50px; /* Distância do topo */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+    top: 60px;
+    left: 0;
+    width: 100%;
     text-align: center;
-    font-family: 'Montserrat', sans-serif; /* Fonte profissional */
-    font-weight: bold;
-    color: #fff;
-    white-space: pre; /* Necessário para que a quebra de linha (\a) funcione */
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+    color: #00ae9d; /* Verde Sicoob mais vibrante para o logo */
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
     z-index: 10;
   }
-  
-  /* Ajuste específico para a segunda linha (slogan) */
-  .login-page::before {
-    font-size: 1.2rem;
-    line-height: 1.3;
-  }
-  /* Estilo para a segunda linha ficar mais suave */
-  .login-page::before {
-    content: "Sicoob Digital";
-    font-size: 1.1rem;
-  }
-  /* Para adicionar o slogan, vamos adicionar outro pseudo-elemento */
-  .login-page::after {
-    content: "Bem-vinda ao seu \A Banco Digital";
+
+  .login-right::after {
+    content: "O seu banco digital, onde você estiver.";
     position: absolute;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+    top: 95px;
+    left: 0;
+    width: 100%;
     text-align: center;
-    color: #ffd700; /* Dourado para destacar o slogan */
-    font-size: 1.5rem;
-    font-weight: bold;
-    white-space: pre;
+    color: rgba(255, 255, 255, 0.7); /* Branco suave para o slogan */
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
     z-index: 10;
-    text-transform: capitalize;
   }
 
-  /* 5. A COLUNA DA DIREITA AGORA SÓ CENTRALIZA A CAIXA */
   .login-right {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 25px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 150px; /* Espaço para o logo/slogan no topo */
-    z-index: 20; /* Fica acima do fundo e do topo */
+    z-index: 20;
   }
 
-  /* 6. A CAIXA BRANCA - MAIS REFINADA */
+  /* 3. A CAIXA DE LOGIN - Estilo "Glassmorphism" suave */
   .login-form-box {
     width: 100%;
-    max-width: 360px;
-    padding: 30px 20px;
-    background-color: rgba(255, 255, 255, 0.95); /* Levemente transparente */
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3); /* Sombra mais forte para destacar */
+    max-width: 380px;
+    padding: 40px 25px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .login-form-box h2 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #003641; /* Título no azul escuro do banco */
     text-align: center;
-    color: #333;
+    margin-bottom: 10px;
   }
 
   .subtitle {
     text-align: center;
-    margin-bottom: 25px;
-    color: #666;
+    color: #718096;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
   }
 
-  /* 7. INPUTS E BOTÃO - Perfeitos para o toque */
+  /* 4. INPUTS MAIS MODERNOS */
   .input-group label {
-    font-size: 0.9rem;
-    color: #444;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 5px;
   }
 
   .input-group input {
     width: 100%;
-    height: 50px;
+    height: 55px;
+    background: #f7fafc;
+    border: 2px solid #edf2f7;
+    border-radius: 12px;
+    padding: 0 15px;
     font-size: 1rem;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    margin-bottom: 20px;
   }
 
+  .input-group input:focus {
+    border-color: #00ae9d;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 174, 157, 0.1);
+  }
+
+  /* 5. BOTÃO PREMIUM */
   .login-btn-premium {
     width: 100%;
     height: 55px;
-    font-size: 1.2rem;
-    background-color: #00ae9d;
-    color: #fff;
-    border-radius: 10px;
-    font-weight: bold;
-    margin-top: 15px;
+    background: linear-gradient(90deg, #00ae9d 0%, #008f81 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 10px 20px rgba(0, 174, 157, 0.3);
+    margin-top: 10px;
+  }
+
+  .login-btn-premium:active {
+    transform: scale(0.98);
   }
 }
