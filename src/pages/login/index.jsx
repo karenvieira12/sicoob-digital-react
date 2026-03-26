@@ -55,24 +55,33 @@ export default function Login() {
           
           <div className="input-group">
             <label>E-mail</label>
-            <input 
-              type="text" 
-              placeholder="Digite seu e-mail" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} // Captura o texto
-            />
-          </div>
 
-          <div className="input-group">
-            <label>Sua Senha</label>
-            <input 
-              type="password" 
-              placeholder="Digite sua senha" 
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)} // Captura a senha
-            />
-          </div>
-          
+            <div className="input-wrapper">
+              <span className="icon">@</span>
+
+              <input 
+                type="text" 
+                placeholder="Digite seu e-mail" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+        </div>
+      </div>
+
+      <div className="input-group">
+        <label>Sua Senha</label>
+
+        <div className="input-wrapper">
+          <span className="icon">🔒</span>
+
+          <input 
+            type="password" 
+            placeholder="Digite sua senha" 
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+    </div>
+  </div>
           <button 
             className="login-btn-premium" 
             onClick={handleLogin}

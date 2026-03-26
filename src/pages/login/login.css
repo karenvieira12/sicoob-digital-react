@@ -11,6 +11,7 @@ body, html {
   height: 100vh;
   display: flex;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #edf2f7;
 }
 
 /* Área da Esquerda - Identidade e Marca */
@@ -25,6 +26,28 @@ body, html {
   padding: 60px;
   position: relative;
   overflow: hidden;
+}
+.login-left::after {
+  content: '';
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: rgba(201, 210, 0, 0.15); /* limão */
+  border-radius: 50%;
+  filter: blur(100px);
+  bottom: 10%;
+  right: -50px;
+}
+
+/* animação suave */
+.login-left::before,
+.login-left::after {
+  animation: float 8s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-20px); }
 }
 
 /* Efeito de Névoa Sutil no fundo escuro (como você gosta) */
@@ -64,15 +87,17 @@ body, html {
 }
 
 .login-left h1 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 300;
-  line-height: 1.2;
-  margin-bottom: 20px;
 }
 
 .login-left h1 strong {
-  font-weight: 700;
-  color: #c9d200; /* Um leve toque do Limão Sicoob */
+  display: block;
+  font-size: 2.8rem;
+  margin-top: 5px;
+  background: linear-gradient(90deg, #c9d200, #00ae9d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .login-left p {
@@ -92,12 +117,9 @@ body, html {
 }
 
 .login-form-box {
-  width: 100%;
-  max-width: 400px;
-  background: white;
-  padding: 50px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra sutil para "flutuar" */
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .login-form-box h2 {
@@ -147,17 +169,25 @@ body, html {
 
 /* O Botão Principal Robusto */
 .login-btn-premium {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 12px;
-  background-color: #00ae9d; /* Verde Principal */
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 174, 157, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn-premium::after {
+  content: '';
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  background: rgba(255,255,255,0.1);
+  top: -100%;
+  left: -100%;
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+.login-btn-premium:hover::after {
+  top: 100%;
+  left: 100%;
 }
 
 .login-btn-premium:hover {
@@ -180,15 +210,24 @@ body, html {
   cursor: not-allowed;
   opacity: 0.8;
 }
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+/* empurra o texto pra direita pra não ficar em cima do ícone */
+.input-wrapper input {
+  padding-left: 40px;
+}
 /* --- RESPONSIVIDADE DO LOGIN --- */
-
-/* --- RESOLVENDO A QUEBRA NO MOBILE (Telas < 768px) --- */
-
-/* --- RESPONSIVIDADE DO LOGIN (MOBILE) --- */
-
-/* --- REDESIGN PREMIUM MOBILE --- */
-
-/* --- LIMPEZA E REDESIGN PREMIUM MOBILE --- */
 
 @media (max-width: 768px) {
   /* 1. RESET DA PÁGINA: Força o fundo escuro e limpa o layout */
