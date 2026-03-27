@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'; 
 import { useAuth } from '../../hooks/useAuth'; 
 import { useNavigate } from 'react-router-dom';
+import { 
+  Eye, EyeOff, LogOut, Send, 
+  ArrowUpRight, ArrowDownLeft, 
+  BarChart3, CreditCard, Wallet 
+} from 'lucide-react';
 import './home.css';
 
 export default function Home() {
@@ -9,125 +14,240 @@ export default function Home() {
   const [mostrarSaldo, setMostrarSaldo] = useState(false);
   const [valorTransferencia, setValorTransferencia] = useState('');
   const [carregando, setCarregando] = useState(true);
+  const [modalSucessoAberto, setModalSucessoAberto] = useState(false);
+  const [dadosComprovante, setDadosComprovante] = useState({ valor: 0, chave: '' });
+
+  // --- ESTADOS PARA O PIX E SALDO ---
+  const [modalPixAberto, setModalPixAberto] = useState(false);
+  const [chavePix, setChavePix] = useState('');
+  const [valorPix, setValorPix] = useState('');
+  const [saldoLocal, setSaldoLocal] = useState(0);
+
+  // --- ESTADO PARA A LISTA DE TRANSAÇÕES ---
+  const [transacoes, setTransacoes] = useState([
+    { id: 1, nome: "Padaria Central", data: "Hoje, 08:30", valor: 15.90, tipo: "neg" },
+    { id: 2, nome: "Transferência Recebida", data: "Ontem, 14:20", valor: 250.00, tipo: "pos" }
+  ]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCarregando(false);
-    }, 2000); 
+    if (usuarioLogado?.balance) {
+      setSaldoLocal(Number(usuarioLogado.balance));
+    }
+  }, [usuarioLogado]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setCarregando(false), 1500); 
     return () => clearTimeout(timer);
   }, []);
 
   function realizarTransferencia() {
     const valor = parseFloat(valorTransferencia);
     if (!valor || valor <= 0) return alert("❌ Digite um valor válido!");
-    if (valor > usuarioLogado.balance) return alert("❌ Saldo insuficiente!");
+    if (valor > saldoLocal) return alert("❌ Saldo insuficiente!");
     
+    setSaldoLocal(prev => prev - valor);
     alert(`✅ Sucesso! R$ ${valor.toFixed(2)} transferidos.`);
     setValorTransferencia('');
   }
 
-  // --- 🔴 NOVO: VERIFICAÇÃO DE ERRO/OFFLINE (Ponto 1 do Prof) ---
+  const confirmarPix = () => {
+    const valor = parseFloat(valorPix);
+    if (!chavePix || !valor || valor <= 0) {
+      alert("❌ Preencha a chave e um valor válido!");
+      return;
+    }
+    if (valor > saldoLocal) {
+      alert("❌ Saldo insuficiente!");
+      return;
+    }
+
+    setCarregando(true);
+    setTimeout(() => {
+      setSaldoLocal(prev => prev - valor);
+      setDadosComprovante({ valor: valor, chave: chavePix });
+      
+      const novoRegistro = {
+        id: Date.now(),
+        nome: `Pix para ${chavePix}`,
+        data: "Agora",
+        valor: valor,
+        tipo: "neg"
+      };
+      
+      setTransacoes(prev => [novoRegistro, ...prev]);
+
+      setModalPixAberto(false);
+      setModalSucessoAberto(true);
+      
+      setChavePix(''); // Limpa o input
+      setValorPix(''); // Limpa o input
+      setCarregando(false);
+    }, 2000);
+  }; 
+
   if (!carregando && !usuarioLogado?.name) {
     return (
-      <div className="home-container" style={{ textAlign: 'center', padding: '50px' }}>
-        <h1>⚠️ Erro ao carregar dados</h1>
-        <p>O servidor está offline ou sua sessão expirou.</p>
-        <button 
-          onClick={() => navigate('/')} 
-          className="login-btn-premium" 
-          style={{ width: '200px', marginTop: '20px' }}
-        >
-          Voltar para o Login
-        </button>
+      <div className="error-container">
+        <div className="error-card">
+          <h1>⚠️ Sessão Expirada</h1>
+          <p>Por favor, realize o login novamente.</p>
+          <button onClick={() => navigate('/')} className="login-btn-premium">Voltar ao Login</button>
+        </div>
       </div>
     );
   }
 
-  if (!usuarioLogado) return <h1>Acesso Negado</h1>;
-
   return (
     <div className="home-container">
-      {/* O resto do seu return continua EXATAMENTE igual ao que você já tem */}
       <header className="home-header">
-        <div className="user-info">
-          <div className="user-avatar">{usuarioLogado?.name?.charAt(0)}
+        <div className="header-content">
+          <div className="user-info">
+            <div className="user-avatar">{usuarioLogado?.name?.charAt(0)}</div>
+            <div>
+              <span className="welcome-text">Olá,</span>
+              <strong className="user-name">{usuarioLogado?.name}</strong>
+            </div>
           </div>
-          <span>Olá, <strong>{usuarioLogado.name}</strong></span>
+          <button className="btn-logout" onClick={() => { realizarLogout(); navigate('/'); }}>
+            <LogOut size={18} /> <span>Sair</span>
+          </button>
         </div>
-        <button className="btn-logout" onClick={() => { realizarLogout(); navigate('/'); }}>Sair</button>
       </header>
 
       <main className="home-content">
         <div className="balance-card">
           <div className="balance-header">
-            <p>Saldo disponível</p>
+            <span>Saldo disponível</span>
             <button className="btn-eye" onClick={() => setMostrarSaldo(!mostrarSaldo)}>
-              {mostrarSaldo ? '👁️' : '🙈'}
+              {mostrarSaldo ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
           </div>
-
           {carregando ? (
-            <div className="skeleton-container">
-              <div className="skeleton skeleton-title"></div>
-            </div>
+            <div className="skeleton-balance"></div>
           ) : (
-            <h2 className={`balance-value ${!mostrarSaldo ? 'balance-hidden' : ''}`}>
-              R$ {Number(usuarioLogado.balance).toFixed(2)}
+            <h2 className={`balance-value ${!mostrarSaldo ? 'balance-blur' : ''}`}>
+              R$ {saldoLocal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </h2>
           )}
         </div>
 
-        <section className="transfer-area" style={{ marginTop: '30px', background: 'white', padding: '20px', borderRadius: '15px' }}>
-          <h3>Simular Transferência (Pix)</h3>
-          <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+        <div className="actions-grid">
+          <button className="action-item" onClick={() => setModalPixAberto(true)}>
+            <div className="icon-box"><Send size={22}/></div>
+            Pix
+          </button>
+          <button className="action-item"><div className="icon-box"><CreditCard size={22}/></div>Pagar</button>
+          <button className="action-item"><div className="icon-box"><ArrowUpRight size={22}/></div>Transferir</button>
+          <button className="action-item"><div className="icon-box"><BarChart3 size={22}/></div>Investir</button>
+        </div>
+
+        <section className="transfer-card">
+          <h3>Simular Transferência</h3>
+          <div className="transfer-group">
             <input 
               type="number" 
               placeholder="R$ 0,00"
               value={valorTransferencia}
               onChange={(e) => setValorTransferencia(e.target.value)}
-              style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', flex: 1 }}
             />
-            <button 
-              onClick={realizarTransferencia}
-              style={{ backgroundColor: '#00ae9d', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-            >
-              Transferir
-            </button>
+            <button onClick={realizarTransferencia}>Enviar</button>
           </div>
         </section>
 
-        <div className="actions-grid">
-          <div className="action-item"><span className="action-icon">💸</span>Pix</div>
-          <div className="action-item"><span className="action-icon">📄</span>Pagar</div>
-          <div className="action-item"><span className="action-icon">📲</span>Transferir</div>
-          <div className="action-item"><span className="action-icon">📊</span>Investir</div>
-        </div>
-
-        <section className="recent-activity">
-          <h3>Atividade Recente</h3>
-          {carregando ? (
-            <div className="skeleton skeleton-activity" style={{ width: '100%', height: '100px', marginTop: '10px' }}></div>
-          ) : (
-            <>
-              <div className="transaction-item">
-                <div className="transaction-info">
-                  <span className="transaction-name">Padaria Central</span>
-                  <span className="transaction-date">Hoje, 08:30</span>
+        <section className="activity-section">
+          <div className="section-header">
+            <h3>Atividade Recente</h3>
+            <button className="btn-all">Ver tudo</button>
+          </div>
+          <div className="transaction-list">
+            {transacoes.map((t) => (
+              <div className="t-item" key={t.id}>
+                <div className={`t-icon ${t.tipo === 'neg' ? 'red' : 'green'}`}>
+                  {t.tipo === 'neg' ? <ArrowUpRight size={18}/> : <ArrowDownLeft size={18}/>}
                 </div>
-                <span className={`transaction-value value-negative ${!mostrarSaldo ? 'balance-hidden' : ''}`}>- R$ 15,90</span>
-              </div>
-              <div className="transaction-item">
-                <div className="transaction-info">
-                  <span className="transaction-name">Transferência Recebida</span>
-                  <span className="transaction-date">Ontem, 14:20</span>
+                <div className="t-info">
+                  <strong>{t.nome}</strong>
+                  <span>{t.data}</span>
                 </div>
-                <span className={`transaction-value value-positive ${!mostrarSaldo ? 'balance-hidden' : ''}`}>+ R$ 250,00</span>
+                <span className={`t-value ${t.tipo} ${!mostrarSaldo ? 'balance-blur' : ''}`}>
+                  {t.tipo === 'neg' ? '-' : '+'} R$ {t.valor.toFixed(2)}
+                </span>
               </div>
-            </>
-          )}
+            ))}
+          </div>
         </section>
       </main>
+
+      {modalPixAberto && (
+        <div className="modal-overlay">
+          <div className="modal-content animate-card">
+            <div className="modal-header">
+              <h3>Enviar Pix</h3>
+              <button className="btn-close" onClick={() => setModalPixAberto(false)}>✕</button>
+            </div>
+            <div className="modal-body">
+              <div className="modal-input-group">
+                <label>Chave Pix</label>
+                <input 
+                  type="text" 
+                  placeholder="CPF, E-mail ou Telefone"
+                  value={chavePix}
+                  onChange={(e) => setChavePix(e.target.value)}
+                />
+              </div>
+              <div className="modal-input-group">
+                <label>Valor</label>
+                <input 
+                  type="number" 
+                  placeholder="R$ 0,00"
+                  value={valorPix}
+                  onChange={(e) => setValorPix(e.target.value)}
+                />
+              </div>
+              <button className="btn-confirm-pix" onClick={confirmarPix} disabled={carregando}>
+                {carregando ? 'PROCESSANDO...' : 'Confirmar Envio'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  {/* MODAL DE SUCESSO COMPLETO */}
+    {modalSucessoAberto && (
+      <div className="modal-overlay">
+        <div className="modal-content animate-card success-modal">
+          <div className="success-icon">
+          <span style={{ fontSize: '40px', color: '#48bb78' }}>✓</span>
+            </div>
+      
+          <h2>Pix Enviado!</h2>
+      
+          <div className="receipt-details">
+           <div className="receipt-row">
+            <span>Valor</span>
+            <strong>R$ {dadosComprovante.valor.toFixed(2)}</strong>
+          </div>
+           <div className="receipt-row">
+          <span>Para</span>
+          <strong>{dadosComprovante.chave}</strong>
+        </div>
+        <div className="receipt-row">
+          <span>Data</span>
+          <strong>{new Date().toLocaleDateString('pt-BR')}</strong>
+        </div>
+      </div>
+
+      <div className="modal-actions-vertical">
+        <button className="btn-share" onClick={() => alert("Comprovante copiado para a área de transferência!")}>
+           Compartilhar Comprovante
+        </button>
+        
+        <button className="btn-confirm-pix" onClick={() => setModalSucessoAberto(false)}>
+          Voltar ao Início
+        </button>
+        </div>
+       </div>
+      </div>
+      )}
     </div>
   );
 }
-

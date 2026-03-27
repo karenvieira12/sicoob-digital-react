@@ -1,35 +1,43 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth'; // Usando o Hook (Ponto 4 do prof)
+import { useAuth } from '../../hooks/useAuth'; 
 import './login.css'; 
+import { Mail, Lock, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 
 export default function Login() {
+  // Estados 
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [verSenha, setVerSenha] = useState(false);
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState(false);
+
+  // Funções e variáveis
   const navigate = useNavigate();
   const { realizarLogin } = useAuth(); 
   
-  const [carregando, setCarregando] = useState(false);
-  
-  // Criamos estados para capturar o que é digitado (Necessário para a lógica)
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  // 
+  const formularioPreenchido = email.length > 0 && senha.length > 0;
+
+  const toggleSenha = () => {
+    setVerSenha(!verSenha); 
+  }; 
 
   async function handleLogin() {
-    // 1. Impedir login vazio (Regra de negócio básica)
     if (!email || !senha) {
-      alert("Preencha todos os campos!");
+      setErro(true);
+      setTimeout(() => setErro(false), 500);
       return;
     }
 
     setCarregando(true);
-    
-    // 2. Tentar realizar o login (Lógica de erro/sucesso do Ponto 1)
     const resultado = await realizarLogin(email, senha);
     
     if (resultado.success) {
-     window.location.href = '/home';
+      window.location.href = '/home';
     } else {
-      // Exibe o erro de senha errada ou servidor offline
-      alert(resultado.message); 
+      setErro(true);
+      setTimeout(() => setErro(false), 500);
     }
     
     setCarregando(false);
@@ -37,11 +45,11 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <div className="login-left">
-        <div className="login-left-content">
-          <div className="fake-logo">
-            <div className="fake-logo-icon"></div>
-            Sicoob Digital
+    <div className="login-left">
+      <div className="login-left-content animate-text">
+        <div className="fake-logo">
+          <div className="fake-logo-icon"></div>
+          Sicoob Digital
           </div>
           <h1>Bem-vinda ao seu <br /> <strong>Banco Digital</strong></h1>
           <p>Gerencie suas finanças com segurança e agilidade.</p>
@@ -49,41 +57,45 @@ export default function Login() {
       </div>
 
       <div className="login-right">
-        <div className="login-form-box">
-          <h2>Olá, Karen! 👋</h2>
-          <p className="subtitle">Digite suas credenciais para acessar.</p>
+       <div className={`login-form-box animate-card ${erro ? 'shake-error' : ''}`}>
+        <h2>Olá, Karen! <CheckCircle2 size={24} color="#00ae9d" style={{ verticalAlign: 'middle', marginLeft: '8px' }} /></h2>
+        <p className="subtitle">Digite suas credenciais para acessar.</p>
           
           <div className="input-group">
             <label>E-mail</label>
-
             <div className="input-wrapper">
-              <span className="icon">@</span>
-
+              <Mail className="icon" size={20} />
               <input 
                 type="text" 
                 placeholder="Digite seu e-mail" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div className="input-group">
-        <label>Sua Senha</label>
+          <div className="input-group">
+            <label>Sua Senha</label>
+            <div className="input-wrapper">
+              <Lock className="icon" size={20} />
+              <input 
+                type={verSenha ? "text" : "password"} 
+                placeholder="Digite sua senha" 
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+              <button 
+                type="button" 
+                className="btn-ver-senha" 
+                onClick={toggleSenha}
+              >
+                {verSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
 
-        <div className="input-wrapper">
-          <span className="icon">🔒</span>
-
-          <input 
-            type="password" 
-            placeholder="Digite sua senha" 
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-    </div>
-  </div>
           <button 
-            className="login-btn-premium" 
+            className={`login-btn-premium ${formularioPreenchido ? 'pulsar' : ''}`} 
             onClick={handleLogin}
             disabled={carregando}
           >
