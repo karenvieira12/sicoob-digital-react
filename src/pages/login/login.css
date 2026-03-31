@@ -380,91 +380,137 @@ body, html {
   animation: fadeIn 1.2s ease-out forwards;
 }
 /* --- ESTILOS MOBILE (Ativados abaixo de 768px) --- */
+/* ==========================================================================
+   SOLUÇÃO MOBILE COMPLETA - COPIE E SUBSTITUA TODO O SEU @MEDIA ANTIGO
+   ========================================================================== */
+
 @media (max-width: 768px) {
   
-  /* 1. ESTRUTURA GERAL */
+  /* 1. RESET DE PÁGINA (Mata bordas brancas laterais) */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f4f7f8 !important; /* Fundo cinza claro da parte de baixo */
+  }
+
   .login-page {
-    flex-direction: column; /* Empilha as áreas */
-    height: auto; /* Permite rolar a página se o conteúdo for longo */
-    min-height: 100vh;
-    /* Usa o gradiente escuro de fundo da página inteira */
-    background: linear-gradient(135deg, #001f26 0%, #003641 100%);
-    overflow-y: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* 2. ÁREA DA ESQUERDA (Marca) */
+  /* 2. TOPO VERDE (Sangria total de ponta a ponta) */
   .login-left {
-    flex: none; /* Não cresce, ocupa o espaço do conteúdo */
-    width: 100%;
-    padding: 40px 20px 20px 20px; /* Padding reduzido, foco no topo */
-    background: transparent; /* Remove o fundo duplo, usa o da .login-page */
-  }
-
-  /* Ajuste das Névoas (Deixa elas mais sutis no mobile) */
-  .login-left::before, .login-left::after {
-    width: 250px;
-    height: 250px;
-    filter: blur(80px);
-    opacity: 0.15; /* Mais transparentes */
+    width: 100% !important;
+    flex: none !important;
+    background: linear-gradient(135deg, #001f26 0%, #003641 100%) !important;
+    padding: 60px 20px 100px !important; /* Espaço para o card subir */
+    text-align: center !important;
+    box-sizing: border-box !important;
+    display: block !important;
   }
 
   .login-left-content {
-    text-align: center;
-  }
-
-  /* Redução Tipográfica da Esquerda */
-  .login-left h1 {
-    font-size: 1.8rem; /* Menor */
+    width: 100% !important;
+    max-width: none !important;
   }
 
   .login-left h1 strong {
-    font-size: 2.8rem; /* Menor, mas mantém o peso */
+    color: #cbd300 !important; /* Esse é o tom de amarelo/lima do Sicoob */
+    font-size: 2.8rem; /* Mantendo o tamanho que você já tem */
+    display: block;
     margin-top: 5px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important; /* Aumentei a sombra para dar profundidade e destaque */
+    -webkit-text-stroke: 0.2px rgba(0,0,0,0.1); /* Leve contorno para clareza */
+    letter-spacing: -1px;
   }
 
   .login-left p {
-    font-size: 1rem;
-    max-width: 300px;
-    margin: 15px auto 0 auto;
-    opacity: 0.6;
+    font-size: 0.95rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin: 15px auto !important;
+    max-width: 280px !important;
   }
 
-  /* 3. ÁREA DA DIREITA (O Card) */
+  /* 3. ÁREA DA DIREITA (Onde o card flutua) */
   .login-right {
-    flex: none; /* Não cresce */
-    width: 100%;
-    padding: 20px 0 60px 0; /* Espaço embaixo para rolar */
-    background: transparent; /* Remove o fundo cinza, usa o gradiente escuro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    padding: 0 !important;
+    background: transparent !important;
   }
 
-  /* O Card Flutuante no Mobile */
-  .login-form-box {
-    width: calc(100% - 40px); /* Ocupa a largura menos 20px de cada lado */
-    max-width: 380px; /* Mantém um limite elegante */
-    padding: 40px 30px; /* Padding reduzido interno */
-    border-radius: 20px;
+  /* 4. O CARD DE LOGIN (O "Pulo do Gato") */
+  .login-form-box, .login-card {
+    width: 90% !important;
+    max-width: 340px !important; /* Não deixa ficar nem palito nem gordo */
+    background: #ffffff !important;
+    padding: 35px 25px !important;
+    border-radius: 28px !important;
     
-    /* Efeito de Vidro (Glassmorphism) reforçado */
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    /* Faz o card "morder" a parte verde */
+    margin-top: -70px !important; 
     
-    /* Sombra mais suave para flutuar sobre o fundo escuro */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    
-    margin: 0 auto; /* Centraliza horizontalmente */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+    box-sizing: border-box !important;
+    z-index: 10 !important;
   }
 
-  /* Ajuste Tipográfico do Card */
-  .login-form-box h2 {
-    font-size: 1.8rem;
+  /* 5. INPUTS (Correção de Texto Branco e Zoom) */
+  .input-group {
+    margin-bottom: 15px !important;
+    width: 100% !important;
   }
 
-  .subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 30px;
+  .input-group label {
+    font-size: 0.75rem !important;
+    color: #64748b !important;
+    margin-bottom: 5px !important;
+    display: block;
+    text-align: left;
+  }
+
+  .input-group input {
+    width: 100% !important;
+    height: 50px !important;
+    background-color: #f8fafc !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 0 15px 0 40px !important; /* Espaço para o ícone */
+    font-size: 16px !important; /* Crucial para iPhone não dar zoom */
+    color: #1e293b !important; /* TEXTO ESCURO GARANTIDO */
+    -webkit-text-fill-color: #1e293b !important; /* Força no Safari */
+    box-sizing: border-box !important;
+  }
+
+  /* 6. BOTÃO ACESSAR */
+  .login-button {
+    width: 100% !important;
+    height: 52px !important;
+    background-color: #00ae9d !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    margin-top: 15px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 174, 157, 0.3) !important;
+  }
+
+  .forgot-password {
+    display: block !important;
+    margin-top: 15px !important;
+    font-size: 0.85rem !important;
+    color: #64748b !important;
+    text-align: center !important;
+    text-decoration: none !important;
   }
 }

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Eye, EyeOff, LogOut, Send, 
   ArrowUpRight, ArrowDownLeft, 
-  BarChart3, CreditCard, Wallet 
+  BarChart3, CreditCard, Wallet,
+  Home as HomeIcon, List, User // Renomeamos o Home para HomeIcon
 } from 'lucide-react';
 import './home.css';
 
@@ -22,6 +23,14 @@ export default function Home() {
   const [chavePix, setChavePix] = useState('');
   const [valorPix, setValorPix] = useState('');
   const [saldoLocal, setSaldoLocal] = useState(0);
+
+  const [modalTransferirAberto, setModalTransferirAberto] = useState(false);
+  const [nomeDestinatario, setNomeDestinatario] = useState('');
+
+  const [modalPagarAberto, setModalPagarAberto] = useState(false);
+  const [escaneando, setEscaneando] = useState(false);
+
+  const [modalInvestirAberto, setModalInvestirAberto] = useState(false);
 
   // --- ESTADO PARA A LISTA DE TRANSAÇÕES ---
   const [transacoes, setTransacoes] = useState([
@@ -133,26 +142,55 @@ export default function Home() {
 
         <div className="actions-grid">
           <button className="action-item" onClick={() => setModalPixAberto(true)}>
-            <div className="icon-box"><Send size={22}/></div>
-            Pix
+          <div className="icon-box"><Send size={22}/></div>
+          Pix
           </button>
-          <button className="action-item"><div className="icon-box"><CreditCard size={22}/></div>Pagar</button>
-          <button className="action-item"><div className="icon-box"><ArrowUpRight size={22}/></div>Transferir</button>
-          <button className="action-item"><div className="icon-box"><BarChart3 size={22}/></div>Investir</button>
+          <button className="action-item" onClick={() => {setModalPagarAberto(true);setEscaneando(true);
+          // Simula que achou o boleto após 3 segundos
+          setTimeout(() => setEscaneando(false), 3000);
+          }}>
+          <div className="icon-box"><CreditCard size={22}/></div>
+          Pagar
+          </button>
+          <button className="action-item" onClick={() => setModalTransferirAberto(true)}>
+          <div className="icon-box"><ArrowUpRight size={22}/></div>
+          Transferir
+          </button>
+          <button className="action-item" onClick={() => setModalInvestirAberto(true)}>
+          <div className="icon-box"><BarChart3 size={22}/></div>
+          Investir
+          </button>
         </div>
 
         <section className="transfer-card">
           <h3>Simular Transferência</h3>
-          <div className="transfer-group">
-            <input 
-              type="number" 
-              placeholder="R$ 0,00"
-              value={valorTransferencia}
-              onChange={(e) => setValorTransferencia(e.target.value)}
-            />
-            <button onClick={realizarTransferencia}>Enviar</button>
-          </div>
-        </section>
+          <div className="transfer-group-vertical">
+    
+    {/* Input de nome que recebe o valor do modal */}
+        <input 
+          type="text" 
+          placeholder="Para quem?" 
+          value={nomeDestinatario} // <--- Nome que vem do Modal de Transferir
+          onChange={(e) => setNomeDestinatario(e.target.value)}
+          className="input-transferencia"
+        />
+    {/* Input de valor e botão "Enviar" */}
+        <div className="transfer-input-valor-group"> 
+        <input 
+          type="number" 
+          placeholder="R$ 0,00"
+          value={valorTransferencia}
+          onChange={(e) => setValorTransferencia(e.target.value)}
+          className="input-valor"
+        />
+      
+      {/* Botão alinhado à direita */}
+        <div className="btn-enviar-container">
+        <button className="btn-enviar" onClick={realizarTransferencia}>Enviar</button>
+       </div>
+     </div>
+  </div>
+</section>
 
         <section className="activity-section">
           <div className="section-header">
@@ -248,6 +286,132 @@ export default function Home() {
        </div>
       </div>
       )}
+      {/* BARRA DE NAVEGAÇÃO INFERIOR - COLE AQUI */}
+      <nav className="bottom-nav">
+        <div className="nav-item active">
+          <HomeIcon size={22} /> 
+          <span>Início</span>
+        </div>
+        <div className="nav-item" onClick={() => alert('Em breve: Extrato')}>
+          <List size={22} />
+          <span>Extrato</span>
+        </div>
+        <div className="nav-item" onClick={() => alert('Em breve: Cartões')}>
+          <CreditCard size={22} />
+          <span>Cartões</span>
+        </div>
+        <div className="nav-item" onClick={() => alert('Em breve: Perfil')}>
+          <User size={22} />
+          <span>Perfil</span>
+        </div>
+      </nav>
+      {/* MODAL DE TRANSFERIR - CONTATOS */}
+      {modalTransferirAberto && (
+        <div className="modal-overlay" onClick={() => setModalTransferirAberto(false)}>
+          <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+            <h3>Transferir para</h3>
+            <button className="btn-close" onClick={() => setModalTransferirAberto(false)}>✕</button>
+            </div>
+      
+            <div className="contatos-lista">
+            {[
+          { nome: "Minha Mãe", cor: "#e91e63" },
+          { nome: "Daniel (Namorado)", cor: "#2196f3" },
+          { nome: "Foco Estudos", cor: "#4caf50" }
+        ].map((contato, index) => (
+          <div 
+            key={index} 
+            className="t-item" 
+            style={{ cursor: 'pointer', padding: '15px 0' }}
+            onClick={() => {
+              setNomeDestinatario(contato.nome); // Preenche o input!
+              setModalTransferirAberto(false);   // Fecha o modal
+            }}
+          >
+            <div className="user-avatar" style={{ backgroundColor: contato.cor }}>
+              {contato.nome.charAt(0)}
+            </div>
+            <div className="t-info">
+              <strong>{contato.nome}</strong>
+              <span>Contato frequente</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+      {modalPagarAberto && (
+        <div className="modal-overlay">
+          <div className="modal-content animate-card scanner-modal">
+            <div className="modal-header">
+              <h3>Escanear Boleto</h3>
+              <button className="btn-close" onClick={() => setModalPagarAberto(false)}>✕</button>
+            </div>
+
+            <div className="scanner-container">
+              {escaneando ? (
+            <>
+            <div className="scanner-frame">
+              <div className="laser-line"></div>
+            </div>
+            <p>Posicione o código de barras...</p>
+          </>
+        ) : (
+          <div className="scanner-success">
+            <div className="success-icon">📄</div>
+            <p>Boleto Detectado!</p>
+            <strong>Energia Elétrica - R$ 124,90</strong>
+            <button className="btn-confirm-pix" onClick={() => {
+              alert("Pagamento realizado!");
+              setModalPagarAberto(false);
+            }}>
+              Pagar Agora
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+          {modalInvestirAberto && (
+          <div className="modal-overlay" onClick={() => setModalInvestirAberto(false)}>
+            <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>Seu Rendimento</h3>
+                <button className="btn-close" onClick={() => setModalInvestirAberto(false)}>✕</button>
+              </div>
+
+              <div className="investir-body">
+              <div className="rendimento-hoje">
+                <span>Rendeu hoje</span>
+                <strong className="green">+ R$ 0,42</strong>
+              </div>
+
+        {/* Mini Gráfico em SVG */}
+        <div className="chart-container">
+          <svg viewBox="0 0 100 40" className="chart-svg">
+            <path 
+              d="M0 40 L10 35 L30 38 L50 20 L70 25 L100 5" 
+              fill="none" 
+              stroke="#48bb78" 
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+
+        <div className="investir-info">
+          <p>Seu dinheiro está rendendo <strong>105% do CDI</strong></p>
+          <button className="btn-confirm-pix" style={{marginTop: '15px'}}>
+            Investir mais
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

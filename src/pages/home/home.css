@@ -4,7 +4,13 @@
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
 }
-
+.home-content {
+  max-width: 600px; /* Alinha com a largura que você já usa nos cards */
+  margin: 0 auto;   /* Centraliza tudo no meio da tela do PC */
+  padding: 0 20px 100px; /* Dá um respiro nas laterais e espaço para a barra inferior */
+  display: flex;
+  flex-direction: column;
+}
 /* 2. HEADER - O FUNDO AZUL DO TOPO */
 .home-header {
   background-color: #003641; /* Verde/Azul escuro Sicoob */
@@ -57,8 +63,9 @@
 /* 3. CARD DE SALDO - ELEVADO */
 .balance-card {
   background: white;
-  max-width: 600px;
-  margin: -35px auto 15px; 
+  width: 100%; 
+  margin-top: -35px; 
+  margin-bottom: 15px;
   padding: 20px 25px; /* Card mais "magro" */
   border-radius: 24px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -123,8 +130,8 @@
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  max-width: 600px;
-  margin: 0 auto 25px;
+  width: 100%; 
+  margin-bottom: 25px;
   gap: 20px;
 }
 
@@ -207,8 +214,8 @@
 /* 5. CARD DE TRANSFERÊNCIA E ATIVIDADE */
 .transfer-card, .activity-section {
   background: white;
-  max-width: 600px;
-  margin: 0 auto 12px;
+  width: 100%; 
+  margin-bottom: 12px;
   padding: 15px 20px;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
@@ -577,8 +584,232 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  
 }
-/* --- PARTE 1: TOPO E SALDO (MOBILE) --- */
+.bottom-nav {
+  display: none !important; /* POR PADRÃO, FICA ESCONDIDA (Para sumir no PC) */
+}
+
+/* BOTÃO DE TRANSFERIR */
+.transfer-card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.transfer-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.transfer-input-valor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-transferencia {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 15px; /* Bordas mais suaves */
+  background-color: white;
+  box-sizing: border-box; /* Fundamental para o padding não "empurrar" a largura */
+}
+
+.btn-enviar {
+  background-color: #003333; /* O seu verde escuro */
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 25px; /* Bem arredondado como na imagem */
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn-enviar:hover {
+  background-color: #004d4d;
+  transform: scale(1.05); /* Um pequeno feedback ao passar o mouse */
+}
+
+.btn-enviar:active {
+  transform: scale(0.95);
+}
+
+.input-valor {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 15px; /* Deixei 15px igual ao de cima */
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box; /* ISSO AQUI resolve o erro da imagem */
+  background-color: white;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px); /* Esse é o segredo do visual premium */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.contatos-lista {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Reutilizando o estilo de item que você já tem, mas com hover */
+.contatos-lista .t-item {
+  transition: background 0.2s;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.contatos-lista .t-item:hover {
+  background: #f8f9fa;
+}
+
+.contatos-lista .user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+.animate-card {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* BOTÃO PAGAR */
+.scanner-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.scanner-frame {
+  width: 100%;
+  height: 180px;
+  border: 2px solid #004d4d; /* Seu verde escuro */
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  background: #f0fdf4; /* Um fundo verde bem clarinho */
+  margin-bottom: 15px;
+}
+
+/* A LINHA LASER ANIMADA */
+.laser-line {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #48bb78; /* Verde brilhante */
+  box-shadow: 0 0 15px #48bb78;
+  animation: scanLoop 2s infinite ease-in-out;
+}
+
+@keyframes scanLoop {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+.scanner-success {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* BOTÃO INVESTIR */
+
+.investir-body {
+  padding: 10px 0;
+  text-align: center;
+}
+
+.rendimento-hoje {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.rendimento-hoje span {
+  font-size: 14px;
+  color: #666;
+}
+
+.rendimento-hoje strong {
+  font-size: 24px;
+  color: #48bb78;
+}
+
+/* Container do Gráfico */
+.chart-container {
+  background: #f8fdfa;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px dashed #48bb78;
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0px 4px 4px rgba(72, 187, 120, 0.2));
+}
+
+/* Animação para o gráfico aparecer "subindo" */
+.chart-svg path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawLine 2s forwards ease-out;
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+.investir-info p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+
+
+/* ---TOPO E SALDO (MOBILE) --- */
 @media (max-width: 480px) {
   /* 1. Força o container principal a alinhar tudo no centro da tela */
   .home-content {
@@ -780,5 +1011,44 @@
     right: 15px !important;
     top: 15px !important;
     font-size: 1.2rem !important;
+  }
+  /* BARRA INFERIOR FIXA - ESTILO APP */
+  .bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 65px !important;
+    background-color: #ffffff !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05) !important;
+    z-index: 9999 !important;
+  }
+
+  .nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    color: #94a3b8 !important; /* Cor cinza para itens inativos */
+    gap: 4px !important;
+    cursor: pointer;
+  }
+
+  /* Cor Verde Sicoob para o item ativo */
+  .nav-item.active {
+    color: #00ae9d !important;
+  }
+
+  .nav-item span {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+  }
+
+  /* IMPORTANTE: Empurra o conteúdo pra cima para a barra não tampar os botões */
+  .home-content {
+    padding-bottom: 90px !important;
   }
 }
