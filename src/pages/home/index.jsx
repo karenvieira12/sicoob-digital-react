@@ -51,6 +51,16 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+  const algumModalAberto = modalPixAberto || modalTransferirAberto || modalPagarAberto || modalInvestirAberto || modalSucessoAberto;
+  
+  if (algumModalAberto) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'unset';
+  }
+}, [modalPixAberto, modalTransferirAberto, modalPagarAberto, modalInvestirAberto, modalSucessoAberto]);
+
   function realizarTransferencia() {
     const valor = parseFloat(valorTransferencia);
     if (!valor || valor <= 0) return alert("❌ Digite um valor válido!");
@@ -312,12 +322,13 @@ export default function Home() {
 </main>
 
       {modalPixAberto && (
-        <div className="modal-overlay">
-          <div className="modal-content animate-card">
+        <div className="modal-overlay" onClick={() => setModalPixAberto(false)}>
+          {/* ADICIONE o onClick com stopPropagation aqui no modal-content: */}
+          <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Enviar Pix</h3>
-              <button className="btn-close" onClick={() => setModalPixAberto(false)}>✕</button>
-            </div>
+            <h3>Enviar Pix</h3>
+          <button className="btn-close" onClick={() => setModalPixAberto(false)}>✕</button>
+         </div>
             <div className="modal-body">
               <div className="modal-input-group">
                 <label>Chave Pix</label>
@@ -345,13 +356,13 @@ export default function Home() {
         </div>
       )}
   {/* MODAL DE SUCESSO COMPLETO */}
-    {modalSucessoAberto && (
-      <div className="modal-overlay">
-        <div className="modal-content animate-card success-modal">
-          <div className="success-icon">
-          <span style={{ fontSize: '40px', color: '#48bb78' }}>✓</span>
-            </div>
-      
+     {modalSucessoAberto && (
+    /* Ao clicar no fundo escuro, o modal fecha */
+    <div className="modal-overlay" onClick={() => setModalSucessoAberto(false)}>
+      <div className="modal-content animate-card success-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="success-icon">
+        <span style={{ fontSize: '40px', color: '#48bb78' }}>✓</span>
+    </div>
           <h2>Pix Enviado!</h2>
       
           <div className="receipt-details">
@@ -416,12 +427,12 @@ export default function Home() {
      </nav>
       {/* MODAL DE TRANSFERIR - CONTATOS */}
       {modalTransferirAberto && (
-        <div className="modal-overlay" onClick={() => setModalTransferirAberto(false)}>
-          <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-            <h3>Transferir para</h3>
-            <button className="btn-close" onClick={() => setModalTransferirAberto(false)}>✕</button>
-            </div>
+      <div className="modal-overlay" onClick={() => setModalTransferirAberto(false)}>
+        <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-header">
+          <h3>Transferir para</h3>
+          <button className="btn-close" onClick={() => setModalTransferirAberto(false)}>✕</button>
+      </div>
       
             <div className="contatos-lista">
             {[
@@ -452,12 +463,12 @@ export default function Home() {
   </div>
 )}
       {modalPagarAberto && (
-        <div className="modal-overlay">
-          <div className="modal-content animate-card scanner-modal">
+        <div className="modal-overlay" onClick={() => setModalPagarAberto(false)}>
+          <div className="modal-content animate-card scanner-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Escanear Boleto</h3>
-              <button className="btn-close" onClick={() => setModalPagarAberto(false)}>✕</button>
-            </div>
+            <h3>Escanear Boleto</h3>
+            <button className="btn-close" onClick={() => setModalPagarAberto(false)}>✕</button>
+        </div>
 
             <div className="scanner-container">
               {escaneando ? (
@@ -488,9 +499,9 @@ export default function Home() {
           <div className="modal-overlay" onClick={() => setModalInvestirAberto(false)}>
             <div className="modal-content animate-card" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h3>Seu Rendimento</h3>
-                <button className="btn-close" onClick={() => setModalInvestirAberto(false)}>✕</button>
-              </div>
+              <h3>Seu Rendimento</h3>
+              <button className="btn-close" onClick={() => setModalInvestirAberto(false)}>✕</button>
+          </div>
 
               <div className="investir-body">
               <div className="rendimento-hoje">
