@@ -32,6 +32,8 @@ export default function Home() {
 
   const [modalInvestirAberto, setModalInvestirAberto] = useState(false);
 
+  const [abaAtiva, setAbaAtiva] = useState('inicio');
+
   // --- ESTADO PARA A LISTA DE TRANSAÇÕES ---
   const [transacoes, setTransacoes] = useState([
     { id: 1, nome: "Padaria Central", data: "Hoje, 08:30", valor: 15.90, tipo: "neg" },
@@ -123,98 +125,191 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="home-content">
-        <div className="balance-card">
-          <div className="balance-header">
-            <span>Saldo disponível</span>
-            <button className="btn-eye" onClick={() => setMostrarSaldo(!mostrarSaldo)}>
-              {mostrarSaldo ? <Eye size={20} /> : <EyeOff size={20} />}
-            </button>
-          </div>
-          {carregando ? (
-            <div className="skeleton-balance"></div>
-          ) : (
-            <h2 className={`balance-value ${!mostrarSaldo ? 'balance-blur' : ''}`}>
-              R$ {saldoLocal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-            </h2>
-          )}
+<main className="home-content">
+  
+  {/* --- TELA DE INÍCIO --- */}
+  {abaAtiva === 'inicio' && (
+    <div className="animate-card">
+      <div className="balance-card">
+        <div className="balance-header">
+          <span>Saldo disponível</span>
+          <button className="btn-eye" onClick={() => setMostrarSaldo(!mostrarSaldo)}>
+            {mostrarSaldo ? <Eye size={20} /> : <EyeOff size={20} />}
+          </button>
         </div>
+        {carregando ? (
+          <div className="skeleton-balance"></div>
+        ) : (
+          <h2 className={`balance-value ${!mostrarSaldo ? 'balance-blur' : ''}`}>
+            R$ {saldoLocal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          </h2>
+        )}
+      </div>
 
-        <div className="actions-grid">
-          <button className="action-item" onClick={() => setModalPixAberto(true)}>
+      <div className="actions-grid">
+        <button className="action-item" onClick={() => setModalPixAberto(true)}>
           <div className="icon-box"><Send size={22}/></div>
           Pix
-          </button>
-          <button className="action-item" onClick={() => {setModalPagarAberto(true);setEscaneando(true);
-          // Simula que achou o boleto após 3 segundos
-          setTimeout(() => setEscaneando(false), 3000);
-          }}>
+        </button>
+        <button className="action-item" onClick={() => {setModalPagarAberto(true); setEscaneando(true); setTimeout(() => setEscaneando(false), 3000);}}>
           <div className="icon-box"><CreditCard size={22}/></div>
           Pagar
-          </button>
-          <button className="action-item" onClick={() => setModalTransferirAberto(true)}>
+        </button>
+        <button className="action-item" onClick={() => setModalTransferirAberto(true)}>
           <div className="icon-box"><ArrowUpRight size={22}/></div>
           Transferir
-          </button>
-          <button className="action-item" onClick={() => setModalInvestirAberto(true)}>
+        </button>
+        <button className="action-item" onClick={() => setModalInvestirAberto(true)}>
           <div className="icon-box"><BarChart3 size={22}/></div>
           Investir
-          </button>
+        </button>
+      </div>
+
+      <section className="transfer-card">
+        <h3>Simular Transferência</h3>
+        <div className="transfer-group-vertical">
+          <input 
+            type="text" 
+            placeholder="Para quem?" 
+            value={nomeDestinatario} 
+            onChange={(e) => setNomeDestinatario(e.target.value)}
+            className="input-transferencia"
+          />
+          <div className="transfer-input-valor-group"> 
+            <input 
+              type="number" 
+              placeholder="R$ 0,00"
+              value={valorTransferencia}
+              onChange={(e) => setValorTransferencia(e.target.value)}
+              className="input-valor"
+            />
+            <div className="btn-enviar-container">
+              <button className="btn-enviar" onClick={realizarTransferencia}>Enviar</button>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <section className="transfer-card">
-          <h3>Simular Transferência</h3>
-          <div className="transfer-group-vertical">
-    
-    {/* Input de nome que recebe o valor do modal */}
-        <input 
-          type="text" 
-          placeholder="Para quem?" 
-          value={nomeDestinatario} // <--- Nome que vem do Modal de Transferir
-          onChange={(e) => setNomeDestinatario(e.target.value)}
-          className="input-transferencia"
-        />
-    {/* Input de valor e botão "Enviar" */}
-        <div className="transfer-input-valor-group"> 
-        <input 
-          type="number" 
-          placeholder="R$ 0,00"
-          value={valorTransferencia}
-          onChange={(e) => setValorTransferencia(e.target.value)}
-          className="input-valor"
-        />
-      
-      {/* Botão alinhado à direita */}
-        <div className="btn-enviar-container">
-        <button className="btn-enviar" onClick={realizarTransferencia}>Enviar</button>
-       </div>
-     </div>
-  </div>
-</section>
-
-        <section className="activity-section">
-          <div className="section-header">
-            <h3>Atividade Recente</h3>
-            <button className="btn-all">Ver tudo</button>
-          </div>
-          <div className="transaction-list">
-            {transacoes.map((t) => (
-              <div className="t-item" key={t.id}>
-                <div className={`t-icon ${t.tipo === 'neg' ? 'red' : 'green'}`}>
-                  {t.tipo === 'neg' ? <ArrowUpRight size={18}/> : <ArrowDownLeft size={18}/>}
-                </div>
-                <div className="t-info">
-                  <strong>{t.nome}</strong>
-                  <span>{t.data}</span>
-                </div>
-                <span className={`t-value ${t.tipo} ${!mostrarSaldo ? 'balance-blur' : ''}`}>
-                  {t.tipo === 'neg' ? '-' : '+'} R$ {t.valor.toFixed(2)}
-                </span>
+      <section className="activity-section">
+        <div className="section-header">
+          <h3>Atividade Recente</h3>
+          <button className="btn-all">Ver tudo</button>
+        </div>
+        <div className="transaction-list">
+          {transacoes.map((t) => (
+            <div className="t-item" key={t.id}>
+              <div className={`t-icon ${t.tipo === 'neg' ? 'red' : 'green'}`}>
+                {t.tipo === 'neg' ? <ArrowUpRight size={18}/> : <ArrowDownLeft size={18}/>}
               </div>
-            ))}
-          </div>
-        </section>
-      </main>
+              <div className="t-info">
+                <strong>{t.nome}</strong>
+                <span>{t.data}</span>
+              </div>
+              <span className={`t-value ${t.tipo} ${!mostrarSaldo ? 'balance-blur' : ''}`}>
+                {t.tipo === 'neg' ? '-' : '+'} R$ {t.valor.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  )}
+
+  {/* --- TELA DE EXTRATO --- */}
+  {abaAtiva === 'extrato' && (
+    <div className="tab-content animate-card">
+      <h3 style={{ marginBottom: '20px' }}>Extrato Detalhado</h3>
+      {/* Reutilizando sua lista de transações para o extrato não ficar vazio */}
+      <div className="transaction-list">
+          {transacoes.map((t) => (
+            <div className="t-item" key={t.id}>
+              <div className={`t-icon ${t.tipo === 'neg' ? 'red' : 'green'}`}>
+                {t.tipo === 'neg' ? <ArrowUpRight size={18}/> : <ArrowDownLeft size={18}/>}
+              </div>
+              <div className="t-info">
+                <strong>{t.nome}</strong>
+                <span>{t.data}</span>
+              </div>
+              <span className={`t-value ${t.tipo}`}>
+                {t.tipo === 'neg' ? '-' : '+'} R$ {t.valor.toFixed(2)}
+              </span>
+            </div>
+          ))}
+      </div>
+    </div>
+  )}
+
+  {/* --- TELA DE CARTÕES --- */}
+  {abaAtiva === 'cartoes' && (
+    <div className="tab-content animate-card">
+      <h3>Meus Cartões</h3>
+      <div className="credit-card-mockup">
+         <div className="card-chip"></div>
+         <strong style={{fontSize: '18px'}}>{usuarioLogado?.name}</strong>
+         <span style={{letterSpacing: '2px'}}>**** **** **** 5678</span>
+      </div>
+      <p style={{ marginTop: '20px', color: '#666', fontSize: '14px' }}>Cartão virtual ativo</p>
+    </div>
+  )}
+
+  {/* --- TELA DE PERFIL  --- */}
+  {abaAtiva === 'perfil' && (
+    <div className="tab-content animate-card">
+      {/* Foto/Avatar Centralizado */}
+    <div className="user-avatar" style={{width: '80px', height: '80px', fontSize: '30px', margin: '0 auto 15px', backgroundColor: '#004d4d', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
+      {usuarioLogado?.name?.charAt(0)}
+    </div>
+    
+    <h3 style={{ marginBottom: '5px' }}>{usuarioLogado?.name}</h3>
+    <p style={{color: '#666', marginBottom: '30px'}}>Desenvolvedora ADS</p>
+    
+    {/* Container de Informações com Alinhamento Profissional */}
+    <div className="profile-info-container" style={{ width: '100%' }}>
+      
+      <div className="profile-row" style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+        <strong style={{ color: '#004d4d' }}>E-mail</strong>
+        <span style={{ color: '#666' }}>{usuarioLogado?.email || 'karen.dev@exemplo.com'}</span>
+      </div>
+
+      <div className="profile-row" style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+        <strong style={{ color: '#004d4d' }}>Conta</strong>
+        <span style={{ color: '#666' }}>12345-6</span>
+      </div>
+
+      <div className="profile-row" style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+        <strong style={{ color: '#004d4d' }}>Agência</strong>
+        <span style={{ color: '#666' }}>0001</span>
+      </div>
+
+      <div className="profile-row" style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid #eee' }}>
+        <strong style={{ color: '#004d4d' }}>Tipo</strong>
+        <span style={{ color: '#666' }}>Corrente</span>
+      </div>
+      
+    </div>
+
+    {/* Botão de Sair com destaque */}
+    <button 
+      className="btn-logout" 
+      style={{
+        marginTop: '40px', 
+        width: '100%', 
+        padding: '14px', 
+        borderRadius: '15px', 
+        backgroundColor: '#fff1f1', 
+        color: '#e53e3e', 
+        border: '1px solid #fed7d7',
+        fontWeight: 'bold',
+        cursor: 'pointer'
+      }} 
+      onClick={() => { realizarLogout(); navigate('/'); }}
+    >
+      Sair da Conta
+    </button>
+  </div>
+)}
+
+</main>
 
       {modalPixAberto && (
         <div className="modal-overlay">
@@ -288,23 +383,37 @@ export default function Home() {
       )}
       {/* BARRA DE NAVEGAÇÃO INFERIOR - COLE AQUI */}
       <nav className="bottom-nav">
-        <div className="nav-item active">
+        <div 
+          className={`nav-item ${abaAtiva === 'inicio' ? 'active' : ''}`} 
+          onClick={() => setAbaAtiva('inicio')}
+        >
           <HomeIcon size={22} /> 
           <span>Início</span>
         </div>
-        <div className="nav-item" onClick={() => alert('Em breve: Extrato')}>
-          <List size={22} />
-          <span>Extrato</span>
+
+        <div 
+          className={`nav-item ${abaAtiva === 'extrato' ? 'active' : ''}`} 
+          onClick={() => setAbaAtiva('extrato')}
+        >
+        <List size={22} />
+        <span>Extrato</span>
         </div>
-        <div className="nav-item" onClick={() => alert('Em breve: Cartões')}>
+        <div 
+          className={`nav-item ${abaAtiva === 'cartoes' ? 'active' : ''}`} 
+          onClick={() => setAbaAtiva('cartoes')}
+        >
           <CreditCard size={22} />
           <span>Cartões</span>
         </div>
-        <div className="nav-item" onClick={() => alert('Em breve: Perfil')}>
+
+        <div 
+          className={`nav-item ${abaAtiva === 'perfil' ? 'active' : ''}`} 
+          onClick={() => setAbaAtiva('perfil')}
+        >
           <User size={22} />
           <span>Perfil</span>
         </div>
-      </nav>
+     </nav>
       {/* MODAL DE TRANSFERIR - CONTATOS */}
       {modalTransferirAberto && (
         <div className="modal-overlay" onClick={() => setModalTransferirAberto(false)}>
