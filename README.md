@@ -1,6 +1,6 @@
 # 💳 Digital Bank MVP
 
-Projeto de um banco digital desenvolvido com React, com foco em simular um ambiente real de aplicação, indo além da interface e trabalhando lógica de negócio, integração com API e experiência do usuário.
+# Sicoob Digital (Simulação de Banco em React), com foco em simular um ambiente real de aplicação, indo além da interface e trabalhando lógica de negócio, integração com API e experiência do usuário.
 
 ---
 
