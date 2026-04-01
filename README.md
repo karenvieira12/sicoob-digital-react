@@ -60,5 +60,5 @@ Simular um sistema bancário funcional, aplicando conceitos utilizados no mercad
 ---
 ## 📸 Preview
 
-![Preview do projeto](./preview.png) (./preview.png2)
+![Preview do projeto](./preview.png) 
 
