@@ -58,3 +58,6 @@ Simular um sistema bancário funcional, aplicando conceitos utilizados no mercad
 - foco em experiência do usuário
 
 ---
+## 📸 Preview
+
+![Preview do projeto](./preview.png)
